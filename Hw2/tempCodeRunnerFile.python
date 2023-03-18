@@ -1,0 +1,4 @@
+import numpy as np
+
+d = np.zeros(10)
+print(d)

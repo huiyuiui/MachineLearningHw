@@ -1,0 +1,35 @@
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import pandas as pd
+
+train_data = pd.read_csv('Training_label.csv').reset_index(drop=True)
+train_data['label'] = train_data['label'].astype(str)
+
+train_datagen = ImageDataGenerator(
+    rescale=1/255,
+    horizontal_flip=True,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    rotation_range=30,
+    shear_range=0.1
+)
+
+train_generator = train_datagen.flow_from_dataframe(
+    dataframe=train_data,
+    directory="Training_data",
+    x_col="image_id",
+    y_col="label",
+    target_size=(32,32),
+    color_mode="grayscale",
+    class_mode='binary',
+    batch_size=32,
+    shuffle=True,
+)
+
+for data_batch, labels_batch in train_generator:
+    print("data:", data_batch.shape)
+    print("label:", labels_batch.shape)
+    break
+
+print(data_batch)
+
+
